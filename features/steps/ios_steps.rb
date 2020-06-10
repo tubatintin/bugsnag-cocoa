@@ -114,20 +114,19 @@ end
 
 def request_matches_row(body, row)
   puts "Row: #{row.inspect}"
-  row.all? do |key, expected_value|
+  row.each do |key, expected_value|
     puts "Checking value for key '#{key}' matches '#{expected_value}'"
     obs_val = read_key_path(body, key)
     puts(if obs_val.nil? then "Observed value is nil" else "Observed value is '#{obs_val}'" end)
-    match = false
-    if "null".eql? expected_value && obs_val.nil?
+    if ("null".eql? expected_value) && obs_val.nil?
       puts 'Both are null/nil'
-      match = true
-    elsif !obs_val.nil? && (expected_value.eql? obs_val.to_s)
+      next
+    elsif !obs_val.nil? && (expected_value.to_s.eql? obs_val.to_s)
       puts 'Values match'
-      match = true
+      next
     end
-    puts 'Match not found - returning now' if !match
-    return false if !match
+    puts 'Match not found - returning now'
+    return false
   end
   true
 end
