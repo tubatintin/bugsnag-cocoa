@@ -104,23 +104,17 @@ Then("the received requests match:") do |table|
 end
 
 def request_matches_row(body, row)
-  request_matches = true
-
   row.all? do |key, expected_value|
     obs_val = read_key_path(body, key)
     match = false
-    if obs_val.nil?
+    if "null".eql? expected_value && obs_val.nil?
       match = true
-    elsif expected_value.to_s.eql? obs_val.to_s
+    elsif !obs_val.nil? && (expected_value.eql? obs_val.to_s)
       match = true
-    elsif "null".eql? expected_value && obs_val.nil?
-      match = true
-    else
-      match = false
     end
-    request_matches = request_matches && match
+    return false if !match
   end
-  request_matches
+  true
 end
 
 Then("the payload field {string} is equal for request {int} and request {int}") do |key, index_a, index_b|
