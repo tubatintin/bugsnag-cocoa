@@ -1,3 +1,5 @@
+require 'json'
+
 When("I run {string}") do |event_type|
   steps %Q{
     Given the element "ScenarioNameField" is present
@@ -95,23 +97,36 @@ Then("the received requests match:") do |table|
 
   # iterate through each row in the table. exactly 1 request should match each row.
   table.hashes.each do |row|
+    puts "Checking against #{request_count} requests"
     requests.each do |request|
-      event = read_key_path(request[:body], "events.0")
-      match_count += 1 if request_matches_row(event, row)
+      if !request.key? :body or !request[:body].key? "events" then
+        puts 'No body.events in this request - skipping:'
+        puts request.inspect
+        return
+      end
+      events = request[:body]['events']
+      assert_equal(1, events.length, 'Expected exactly one event per request')
+      match_count += 1 if request_matches_row(events[0], row)
     end
   end
   assert_equal(request_count, match_count, "Unexpected number of requests matched the received payloads")
 end
 
 def request_matches_row(body, row)
+  puts "Row: #{row.inspect}"
   row.all? do |key, expected_value|
+    puts "Checking value for key '#{key}' matches '#{expected_value}'"
     obs_val = read_key_path(body, key)
+    puts(if obs_val.nil? then "Observed value is nil" else "Observed value is '#{obs_val}'" end)
     match = false
     if "null".eql? expected_value && obs_val.nil?
+      puts 'Both are null/nil'
       match = true
     elsif !obs_val.nil? && (expected_value.eql? obs_val.to_s)
+      puts 'Values match'
       match = true
     end
+    puts 'Match not found - returning now' if !match
     return false if !match
   end
   true
