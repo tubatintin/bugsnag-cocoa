@@ -87,12 +87,12 @@
         [NSJSONSerialization dataWithJSONObject:actuallyReallyJSON options:0 error:nil];
     }
     @catch (NSException *exception) {
-        [Bugsnag notify:exception block:^BOOL(BugsnagEvent * _Nonnull event) {
-            [event addMetadata:@{
-            @"foo":@"bar"
-            } toSection:@"extras"];
-            return YES;
-        }];
+//        [Bugsnag notify:exception block:^BOOL(BugsnagEvent * _Nonnull event) {
+//            [event addMetadata:@{
+//            @"foo":@"bar"
+//            } toSection:@"extras"];
+//            return YES;
+//        }];
     }
 }
 
@@ -143,41 +143,41 @@
  This method adds some metadata to your application client, that will be included in all subsequent error reports, and visible on the "extras" tab  on the Bugsnag dashboard.
  */
 - (IBAction)addClientMetadata:(id)sender {
-    [Bugsnag addMetadata:@"metadata!" withKey:@"client" toSection:@"extras"];
+//    [Bugsnag addMetadata:@"metadata!" withKey:@"client" toSection:@"extras"];
 }
 
 /**
  This method adds some metadata that will be redacted on the Bugsnag dashboard.  It will only work if the optional configuration is uncommented in the `AppDelegate.m` file.
  */
 - (IBAction)addFilteredMetadata:(id)sender {
-    [Bugsnag addMetadata:@"not_here" withKey:@"filter_me"  toSection:@"extras"];
+//    [Bugsnag addMetadata:@"not_here" withKey:@"filter_me"  toSection:@"extras"];
 }
 
 /**
  This method clears all metadata in the "extras" tab that would be attached to the error reports.  It won't clear data that hasn't been added yet, like data attached through a callback.
  */
 - (IBAction)clearMetaData:(id)sender {
-    [Bugsnag clearMetadataFromSection:@"extras"];
+//    [Bugsnag clearMetadataFromSection:@"extras"];
 }
 
 /**
  This method adds a callback that will trigger whenever an error is triggered.  In this case some extra information is added to the "extras" tab, and the full range of callback functionality can be found at https://docs.bugsnag.com/platforms/ios/customizing-error-reports/
  */
 - (IBAction)addMetadataCallback:(id)sender {
-    [Bugsnag addOnSendErrorBlock:^BOOL(BugsnagEvent * _Nonnull event) {
-        [event addMetadata:@{@"callback": @"data!"} toSection:@"extras"];
-        return YES;
-    }];
+//    [Bugsnag addOnSendErrorBlock:^BOOL(BugsnagEvent * _Nonnull event) {
+//        [event addMetadata:@{@"callback": @"data!"} toSection:@"extras"];
+//        return YES;
+//    }];
 }
 
 /**
  As above, this method adds a callback to trigger when an error occurs.  However this one will set the Severity of the error to "Info" which will be reflected in the errors appearance in your Bugsnag dashboard.
  */
 - (IBAction)addSeverityCallback:(id)sender {
-    [Bugsnag addOnSendErrorBlock:^BOOL(BugsnagEvent * _Nonnull event) {
-        [event setSeverity:BSGSeverityInfo];
-        return YES;
-    }];
+//    [Bugsnag addOnSendErrorBlock:^BOOL(BugsnagEvent * _Nonnull event) {
+//        [event setSeverity:BSGSeverityInfo];
+//        return YES;
+//    }];
 }
 
 /**
@@ -191,15 +191,15 @@
  This adds a callback to the breadcrumb process, setting a different breadcrumb type if a specific message is present.  It when leaves a slightly more detailed breadcrumb than before, with a message, metadata, and type all specified.
  */
 - (IBAction)addBreadcrumbWithCallback:(id)sender {
-    [Bugsnag addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb * _Nonnull breadcrumb) {
-        if ([breadcrumb.message isEqualToString:@"Custom breadcrumb name"]) {
-            breadcrumb.type = BSGBreadcrumbTypeProcess;
-        }
-        return YES;
-    }];
-    [Bugsnag leaveBreadcrumbWithMessage:@"Custom breadcrumb name" metadata:@{
-        @"metadata": @"here!"
-    } andType:BSGBreadcrumbTypeManual];
+//    [Bugsnag addOnBreadcrumbBlock:^BOOL(BugsnagBreadcrumb * _Nonnull breadcrumb) {
+//        if ([breadcrumb.message isEqualToString:@"Custom breadcrumb name"]) {
+//            breadcrumb.type = BSGBreadcrumbTypeProcess;
+//        }
+//        return YES;
+//    }];
+//    [Bugsnag leaveBreadcrumbWithMessage:@"Custom breadcrumb name" metadata:@{
+//        @"metadata": @"here!"
+//    } andType:BSGBreadcrumbTypeManual];
 }
 
 /**
@@ -213,7 +213,7 @@
  This pauses the current session.  If an error occurs when a session is paused it will not be included in the session statistics for the project.
  */
 - (IBAction)pauseCurrentSession:(id)sender {
-    [Bugsnag pauseSession];
+//    [Bugsnag pauseSession];
 }
 
 /**
@@ -227,7 +227,7 @@
  This sets a user on the client, similar to setting one on the configuration.  It will also set the user in a session payload.
  */
 - (IBAction)setUser:(id)sender {
-    [Bugsnag setUser:@"TestUser" withEmail:@"TestUser@UserTesting.co" andName:@"Test Userson"];
+//    [Bugsnag setUser:@"TestUser" withEmail:@"TestUser@UserTesting.co" andName:@"Test Userson"];
 }
 
 @end

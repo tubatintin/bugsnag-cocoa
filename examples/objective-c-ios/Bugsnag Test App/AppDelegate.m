@@ -13,12 +13,31 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    NSString *apiKey = @"APIKEY";
+    NSString *endpoint = @"custom-endpoint-here";
+    //Section for Cocoa V5
+    BugsnagConfiguration *config = [BugsnagConfiguration new];
+    config.apiKey = apiKey;
+    config.autoTrackSessions = NO;
+    // Only used to capture error payloads
+//    [config setEndpointsForNotify:endpoint sessions:endpoint];
+
+    [Bugsnag startBugsnagWithConfiguration:config];
+    
+    //Section for Cocoa V6
+//    BugsnagConfiguration *config = [[BugsnagConfiguration alloc] initWithApiKey:apiKey];
+//        config.autoTrackSessions = NO;
+//        // Only used to capture error payloads
+////    [config setEndpoints:[[BugsnagEndpointConfiguration alloc] initWithNotify:endpoint sessions:endpoint]];
+//
+//        [Bugsnag startWithConfiguration:config];
+    
     /**
      This is the minimum amount of setup required for Bugsnag to work.  Simply add your API key to the app's .plist (Supporting Files/Bugsnag Test App-Info.plist) and the application will deliver all error and session notifications to the appropriate dashboard.
      
      You can find your API key in your Bugsnag dashboard under the settings menu.
      */
-    [Bugsnag start];
+//    [Bugsnag start];
     
     /**
      Bugsnag behavior can be configured through the plist and/or further extended in code by creating a BugsnagConfiguration object and passing it to [Bugsnag startWithConfiguration].
