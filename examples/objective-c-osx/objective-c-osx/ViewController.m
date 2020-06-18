@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "CxxException.h"
 #import <Bugsnag/Bugsnag.h>
 
 @implementation ViewController
@@ -31,6 +32,27 @@
 
 - (IBAction)uncaughtExceptionClick:(id)sender {
     @throw [NSException exceptionWithName:@"uncaughtException" reason:@"reason" userInfo:nil];
+}
+
+- (IBAction)generateNSError:(id)sender {
+    NSError *error = nil;
+    [[NSFileManager defaultManager] removeItemAtPath:@"//invalid/path/somewhere" error:&error];
+    if (error) {
+        [Bugsnag notifyError:error];
+    }
+}
+
+- (IBAction)generateSignal:(id)sender {
+    __builtin_trap();
+}
+
+- (IBAction)generateMachException:(id)sender {
+    void (*ptr)(void) = NULL;
+    ptr();
+}
+
+- (IBAction)generateCxxException:(id)sender {
+    [[CxxException new] crash];
 }
 
 - (void)viewDidLoad {

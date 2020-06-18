@@ -14,6 +14,7 @@
 		93BE1CDD1B62CC360016380C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 93BE1CDC1B62CC360016380C /* Images.xcassets */; };
 		93BE1CE01B62CC360016380C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93BE1CDE1B62CC360016380C /* Main.storyboard */; };
 		93CF94F81B66B09300D1558C /* CustomApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 93CF94F71B66B09300D1558C /* CustomApplication.m */; };
+		A1F5109E249B8D1200AFF4DE /* CxxException.mm in Sources */ = {isa = PBXBuildFile; fileRef = A1F5109D249B8D1200AFF4DE /* CxxException.mm */; };
 		D237D8A707A739A4034FF767 /* libPods-objective-c-osx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54B9582E2984563C0F07C26D /* libPods-objective-c-osx.a */; };
 		E76616EE1F4E43CC0094CECF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E76616ED1F4E43CC0094CECF /* libc++.tbd */; };
 		E76616F01F4E43D10094CECF /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E76616EF1F4E43D10094CECF /* libz.tbd */; };
@@ -34,6 +35,8 @@
 		93BE1CDF1B62CC360016380C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		93CF94F61B66B09300D1558C /* CustomApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomApplication.h; sourceTree = "<group>"; };
 		93CF94F71B66B09300D1558C /* CustomApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomApplication.m; sourceTree = "<group>"; };
+		A1F5109C249B8D1200AFF4DE /* CxxException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CxxException.h; sourceTree = "<group>"; };
+		A1F5109D249B8D1200AFF4DE /* CxxException.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CxxException.mm; sourceTree = "<group>"; };
 		E76616ED1F4E43CC0094CECF /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		E76616EF1F4E43D10094CECF /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		F830779A7F2A813CA88B426B /* Pods-objective-c-osx.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-objective-c-osx.debug.xcconfig"; path = "Pods/Target Support Files/Pods-objective-c-osx/Pods-objective-c-osx.debug.xcconfig"; sourceTree = "<group>"; };
@@ -85,6 +88,8 @@
 		93BE1CD11B62CC360016380C /* objective-c-osx */ = {
 			isa = PBXGroup;
 			children = (
+				A1F5109C249B8D1200AFF4DE /* CxxException.h */,
+				A1F5109D249B8D1200AFF4DE /* CxxException.mm */,
 				93BE1CD41B62CC360016380C /* AppDelegate.h */,
 				93BE1CD51B62CC360016380C /* AppDelegate.m */,
 				93BE1CD91B62CC360016380C /* ViewController.h */,
@@ -215,7 +220,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/env ruby";
-			shellScript = "fork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    system(\"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} https://upload.bugsnag.com/\")\n  end\nend\n";
+			shellScript = "# First, attempt to get the API key from an environment variable\napi_key = ENV[\"BUGSNAG_API_KEY\"]\n\n# If not present, attempt to lookup the value from the Info.plist\nif !api_key\n  default_info_plist_location = Dir.glob(\"./{ios/,}*/Info.plist\").reject {|path| path =~ /build|test/i }\n  plist_buddy_response = `/usr/libexec/PlistBuddy -c \"print :BugsnagAPIKey\" \"#{default_info_plist_location.first}\"`\n  api_key = plist_buddy_response if $?.success?\nend\n\nfork do\n  Process.setsid\n  STDIN.reopen(\"/dev/null\")\n  STDOUT.reopen(\"/dev/null\", \"a\")\n  STDERR.reopen(\"/dev/null\", \"a\")\n\n  require 'shellwords'\n\n  Dir[\"#{ENV[\"DWARF_DSYM_FOLDER_PATH\"]}/*/Contents/Resources/DWARF/*\"].each do |dsym|\n    curl_command = \"curl -F dsym=@#{Shellwords.escape(dsym)} -F projectRoot=#{Shellwords.escape(ENV[\"PROJECT_DIR\"])} \"\n    curl_command += \"-F apiKey=#{Shellwords.escape(api_key)} \" if api_key\n    curl_command += \"https://upload.bugsnag.com/\"\n    system(curl_command)\n  end\nend\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -228,6 +233,7 @@
 				93BE1CDB1B62CC360016380C /* ViewController.m in Sources */,
 				93CF94F81B66B09300D1558C /* CustomApplication.m in Sources */,
 				93BE1CD81B62CC360016380C /* main.m in Sources */,
+				A1F5109E249B8D1200AFF4DE /* CxxException.mm in Sources */,
 				93BE1CD61B62CC360016380C /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16097"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -652,7 +652,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -678,7 +678,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="3Vr-xS-gh5">
-                                <rect key="frame" x="158" y="151" width="165" height="32"/>
+                                <rect key="frame" x="158" y="179" width="165" height="32"/>
                                 <buttonCell key="cell" type="push" title="Uncaught Exception" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="2o3-44-gC6">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
@@ -688,7 +688,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eg7-h0-j0y">
-                                <rect key="frame" x="145" y="118" width="191" height="32"/>
+                                <rect key="frame" x="145" y="146" width="191" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="179" id="cv2-X7-wWG"/>
                                 </constraints>
@@ -701,7 +701,7 @@
                                 </connections>
                             </button>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HHl-Qj-Vaa">
-                                <rect key="frame" x="158" y="184" width="165" height="32"/>
+                                <rect key="frame" x="158" y="212" width="165" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="153" id="Iuy-lb-IMg"/>
                                 </constraints>
@@ -713,15 +713,63 @@
                                     <action selector="rethrownExceptionClick:" target="XfG-lQ-9wD" id="CLl-v5-UN1"/>
                                 </connections>
                             </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="R9x-P6-IS1">
+                                <rect key="frame" x="185" y="113" width="110" height="32"/>
+                                <buttonCell key="cell" type="push" title="Notify Error" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="XEC-lN-ygE">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="generateNSError:" target="XfG-lQ-9wD" id="jd5-Dh-CEc"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1NV-fn-vQl">
+                                <rect key="frame" x="202" y="80" width="77" height="32"/>
+                                <buttonCell key="cell" type="push" title="Signal" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Ubk-zo-KiI">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="generateSignal:" target="XfG-lQ-9wD" id="0NN-fn-n2W"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Vga-Xg-8mj">
+                                <rect key="frame" x="172" y="47" width="137" height="32"/>
+                                <buttonCell key="cell" type="push" title="Mach Exception" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Uy0-Oh-SDt">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="generateMachException:" target="XfG-lQ-9wD" id="qdW-Eq-1au"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EHe-jU-c9e">
+                                <rect key="frame" x="176" y="14" width="130" height="32"/>
+                                <buttonCell key="cell" type="push" title="CXX Exception" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bjt-bn-Ls8">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                    <connections>
+                                        <action selector="generateCxxException:" target="XfG-lQ-9wD" id="FcR-k0-NHy"/>
+                                    </connections>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <constraints>
                             <constraint firstItem="3Vr-xS-gh5" firstAttribute="top" secondItem="HHl-Qj-Vaa" secondAttribute="bottom" constant="12" symbolic="YES" id="2bB-oQ-hu4"/>
                             <constraint firstItem="3Vr-xS-gh5" firstAttribute="leading" secondItem="HHl-Qj-Vaa" secondAttribute="leading" id="2bN-0f-Jpx"/>
                             <constraint firstItem="eg7-h0-j0y" firstAttribute="centerX" secondItem="3Vr-xS-gh5" secondAttribute="centerX" id="5d3-lh-mlS"/>
-                            <constraint firstItem="HHl-Qj-Vaa" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="58" id="BUj-36-Q64"/>
+                            <constraint firstItem="HHl-Qj-Vaa" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="30" id="BUj-36-Q64"/>
                             <constraint firstItem="3Vr-xS-gh5" firstAttribute="trailing" secondItem="HHl-Qj-Vaa" secondAttribute="trailing" id="Z2z-Bt-Bf9"/>
+                            <constraint firstItem="Vga-Xg-8mj" firstAttribute="top" secondItem="1NV-fn-vQl" secondAttribute="bottom" constant="12" symbolic="YES" id="g0O-lT-EFw"/>
+                            <constraint firstItem="R9x-P6-IS1" firstAttribute="top" secondItem="eg7-h0-j0y" secondAttribute="bottom" constant="12" id="gNN-RC-OUg"/>
+                            <constraint firstItem="R9x-P6-IS1" firstAttribute="centerX" secondItem="1NV-fn-vQl" secondAttribute="centerX" id="hzx-Xb-ENn"/>
                             <constraint firstItem="HHl-Qj-Vaa" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="jJa-AF-yrD"/>
+                            <constraint firstItem="R9x-P6-IS1" firstAttribute="centerX" secondItem="eg7-h0-j0y" secondAttribute="centerX" id="kuc-fG-zst"/>
+                            <constraint firstItem="1NV-fn-vQl" firstAttribute="top" secondItem="R9x-P6-IS1" secondAttribute="bottom" constant="12" symbolic="YES" id="lae-Gz-TXY"/>
+                            <constraint firstItem="Vga-Xg-8mj" firstAttribute="centerX" secondItem="EHe-jU-c9e" secondAttribute="centerX" id="rfe-cA-ydA"/>
                             <constraint firstItem="eg7-h0-j0y" firstAttribute="top" secondItem="3Vr-xS-gh5" secondAttribute="bottom" constant="12" symbolic="YES" id="tA3-Un-6ry"/>
+                            <constraint firstItem="EHe-jU-c9e" firstAttribute="top" secondItem="Vga-Xg-8mj" secondAttribute="bottom" constant="12" symbolic="YES" id="vDM-cc-zNG"/>
+                            <constraint firstItem="1NV-fn-vQl" firstAttribute="centerX" secondItem="Vga-Xg-8mj" secondAttribute="centerX" id="ywt-TH-7ev"/>
                         </constraints>
                     </view>
                 </viewController>
