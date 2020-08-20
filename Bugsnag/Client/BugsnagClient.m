@@ -926,13 +926,22 @@ NSString *const BSGBreadcrumbLoadedMessage = @"Bugsnag loaded";
     [self notify:exception handledState:state block:block];
 }
 
+// TODO consider E2E scenario which calls this directly via class extension
+//  (works around difficulties of triggering an actual OOM)
+
+// TODO consider additional unit tests that call this (may require some rejigging)
+
 - (void)notifyOutOfMemoryEvent {
     static NSString *const BSGOutOfMemoryErrorClass = @"Out Of Memory";
     static NSString *const BSGOutOfMemoryMessageFormat = @"The app was likely terminated by the operating system while in the %@";
     NSMutableDictionary *lastLaunchInfo = [[self.oomWatchdog lastBootCachedFileInfo] mutableCopy];
+    if (lastLaunchInfo == nil) { // no useful info recorded
+        return;
+    }
+
     NSArray *crumbs = [self.breadcrumbs cachedBreadcrumbs];
     if (crumbs.count > 0) {
-        lastLaunchInfo[@"breadcrumbs"] = crumbs;
+        BSGDictSetSafeObject(lastLaunchInfo, crumbs, @"breadcrumbs");
     }
     for (NSDictionary *crumb in crumbs) {
         if ([crumb isKindOfClass:[NSDictionary class]]

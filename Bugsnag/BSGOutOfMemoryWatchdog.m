@@ -15,8 +15,8 @@
 #import "Bugsnag.h"
 #import "BugsnagSessionTracker.h"
 #import "Private.h"
-#import "BugsnagErrorTypes.h"
 #import "BSG_RFC3339DateTool.h"
+#import "BugsnagCollections.h"
 
 @interface BSGOutOfMemoryWatchdog ()
 @property(nonatomic, getter=isWatching) BOOL watching;
@@ -25,6 +25,7 @@
 @property(nonatomic, strong, readwrite) NSMutableDictionary *cachedFileInfo;
 @property(nonatomic, strong, readwrite) NSDictionary *lastBootCachedFileInfo;
 @property(nonatomic) NSString *codeBundleId;
+@property(nonatomic) BugsnagConfiguration *config;
 @end
 
 @implementation BSGOutOfMemoryWatchdog
@@ -41,9 +42,10 @@
     }
     if (self = [super init]) {
         _sentinelFilePath = sentinelFilePath;
+        _config = config;
 #ifdef BSGOOMAvailable
-        _oomLastLaunch = [self computeDidOOMLastLaunchWithConfig:config];
-        _cachedFileInfo = [self generateCacheInfoWithConfig:config];
+        _oomLastLaunch = [self computeDidOOMLastLaunch];
+        _cachedFileInfo = [self generateCacheInfo];
 #endif
     }
     return self;
@@ -84,11 +86,10 @@
                selector:@selector(handleUpdateSession:)
                    name:BSGSessionUpdateNotification
                  object:nil];
-    [[Bugsnag configuration]
-        addObserver:self
-         forKeyPath:NSStringFromSelector(@selector(releaseStage))
-            options:NSKeyValueObservingOptionNew
-            context:nil];
+    [self.config addObserver:self
+                  forKeyPath:NSStringFromSelector(@selector(releaseStage))
+                     options:NSKeyValueObservingOptionNew
+                     context:nil];
     self.watching = YES;
 #endif
 }
@@ -111,9 +112,8 @@
     [self deleteSentinelFile];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     @try {
-        [[Bugsnag configuration]
-            removeObserver:self
-                forKeyPath:NSStringFromSelector(@selector(releaseStage))];
+        [self.config removeObserver:self
+                         forKeyPath:NSStringFromSelector(@selector(releaseStage))];
     } @catch (NSException *exception) {
         // Shouldn't happen, but if for some reason, unregistration happens
         // without registration, catch the resulting exception.
@@ -124,33 +124,34 @@
                       ofObject:(id)object
                         change:(NSDictionary<NSString *, id> *)change
                        context:(void *)context {
-    self.cachedFileInfo[@"app"][@"releaseStage"] = change[NSKeyValueChangeNewKey];
+    id newValue = change[NSKeyValueChangeNewKey];
+    BSGDictSetSafeObject(self.cachedFileInfo[@"app"], newValue, @"releaseStage");
     [self writeSentinelFile];
 }
 
 - (void)handleTransitionToActive:(NSNotification *)note {
-    self.cachedFileInfo[@"app"][@"isActive"] = @YES;
+    BSGDictSetSafeObject(self.cachedFileInfo[@"app"], @YES, @"isActive");
     [self writeSentinelFile];
 }
 
 - (void)handleTransitionToInactive:(NSNotification *)note {
-    self.cachedFileInfo[@"app"][@"isActive"] = @NO;
+    BSGDictSetSafeObject(self.cachedFileInfo[@"app"], @NO, @"isActive");
     [self writeSentinelFile];
 }
 
 - (void)handleTransitionToForeground:(NSNotification *)note {
-    self.cachedFileInfo[@"app"][@"inForeground"] = @YES;
+    BSGDictSetSafeObject(self.cachedFileInfo[@"app"], @YES, @"inForeground");
     [self writeSentinelFile];
 }
 
 - (void)handleTransitionToBackground:(NSNotification *)note {
-    self.cachedFileInfo[@"app"][@"inForeground"] = @NO;
+    BSGDictSetSafeObject(self.cachedFileInfo[@"app"], @NO, @"inForeground");
     [self writeSentinelFile];
 }
 
 - (void)handleLowMemoryChange:(NSNotification *)note {
-    self.cachedFileInfo[@"device"][@"lowMemory"] = [BSG_RFC3339DateTool
-                                                    stringFromDate:[NSDate date]];
+    NSString *lowMemory = [BSG_RFC3339DateTool stringFromDate:[NSDate date]];
+    BSGDictSetSafeObject(self.cachedFileInfo[@"device"], lowMemory, @"lowMemory");
     [self writeSentinelFile];
 }
 
@@ -158,7 +159,7 @@
     id session = [note object];
     NSMutableDictionary *cache = (id)self.cachedFileInfo;
     if (session) {
-        cache[@"session"] = session;
+        BSGDictSetSafeObject(cache, session, @"session");
     } else {
         [cache removeObjectForKey:@"session"];
     }
@@ -167,7 +168,7 @@
 
 - (void)setCodeBundleId:(NSString *)codeBundleId {
     _codeBundleId = codeBundleId;
-    self.cachedFileInfo[@"app"][@"codeBundleId"] = codeBundleId;
+    BSGDictInsertIfNotNil(self.cachedFileInfo[@"app"], codeBundleId, @"codeBundleId");
 
     if ([self isWatching]) {
         [self writeSentinelFile];
@@ -175,7 +176,7 @@
 }
 
 
-- (BOOL)computeDidOOMLastLaunchWithConfig:(BugsnagConfiguration *)config {
+- (BOOL)computeDidOOMLastLaunch {
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.sentinelFilePath]) {
         NSDictionary *lastBootInfo = [self readSentinelFile];
         if (lastBootInfo != nil) {
@@ -247,50 +248,54 @@
     [data writeToFile:self.sentinelFilePath atomically:YES];
 }
 
-- (NSMutableDictionary *)generateCacheInfoWithConfig:(BugsnagConfiguration *)config {
+- (NSMutableDictionary *)generateCacheInfo {
     NSDictionary *systemInfo = [BSG_KSSystemInfo systemInfo];
     NSMutableDictionary *cache = [NSMutableDictionary new];
     NSMutableDictionary *app = [NSMutableDictionary new];
 
-    app[@"id"] = systemInfo[@BSG_KSSystemField_BundleID] ?: @"";
-    app[@"name"] = systemInfo[@BSG_KSSystemField_BundleName] ?: @"";
-    app[@"releaseStage"] = config.releaseStage;
-    app[@"version"] = systemInfo[@BSG_KSSystemField_BundleShortVersion] ?: @"";
-    app[@"bundleVersion"] = systemInfo[@BSG_KSSystemField_BundleVersion] ?: @"";
+    BSGDictSetSafeObject(app, systemInfo[@BSG_KSSystemField_BundleID], @"id");
+    BSGDictSetSafeObject(app, systemInfo[@BSG_KSSystemField_BundleName], @"name");
+    BSGDictSetSafeObject(app, self.config.releaseStage, @"releaseStage");
+    BSGDictSetSafeObject(app, systemInfo[@BSG_KSSystemField_BundleShortVersion], @"version");
+    BSGDictSetSafeObject(app, systemInfo[@BSG_KSSystemField_BundleVersion], @"bundleVersion");
+
     // 'codeBundleId' only (optionally) exists for React Native clients and defaults otherwise to nil
-    app[@"codeBundleId"] = self.codeBundleId;
+    BSGDictSetSafeObject(app, self.codeBundleId, @"codeBundleId");
+
 #if BSGOOMAvailable
     UIApplicationState state = [BSG_KSSystemInfo currentAppState];
-    app[@"inForeground"] = @([BSG_KSSystemInfo isInForeground:state]);
-    app[@"isActive"] = @(state == UIApplicationStateActive);
+    BSGDictSetSafeObject(app, @([BSG_KSSystemInfo isInForeground:state]), @"inForeground");
+    BSGDictSetSafeObject(app, @(state == UIApplicationStateActive), @"isActive");
 #else
-    app[@"inForeground"] = @YES;
+    BSGDictSetSafeObject(app, @YES, @"inForeground");
 #endif
 #if BSG_PLATFORM_TVOS
-    app[@"type"] = @"tvOS";
+    BSGDictSetSafeObject(app, @"tvOS", @"type");
 #elif BSG_PLATFORM_IOS
-    app[@"type"] = @"iOS";
+    BSGDictSetSafeObject(app, @"iOS", @"type");
 #endif
-    cache[@"app"] = app;
+    BSGDictSetSafeObject(cache, app, @"app");
 
     NSMutableDictionary *device = [NSMutableDictionary new];
-    device[@"id"] = systemInfo[@BSG_KSSystemField_DeviceAppHash];
+    BSGDictSetSafeObject(device, systemInfo[@BSG_KSSystemField_DeviceAppHash], @"id");
     // device[@"lowMemory"] is initially unset
-    device[@"osBuild"] = systemInfo[@BSG_KSSystemField_OSVersion];
-    device[@"osVersion"] = systemInfo[@BSG_KSSystemField_SystemVersion];
-    device[@"osName"] = systemInfo[@BSG_KSSystemField_SystemName];
-    // Translated from 'iDeviceMaj,Min' into human-readable "iPhone X" description on the server
-    device[@"model"] = systemInfo[@BSG_KSSystemField_Machine];
-    device[@"modelNumber"] = systemInfo[@ BSG_KSSystemField_Model];
-    device[@"wordSize"] = @(PLATFORM_WORD_SIZE);
-    device[@"locale"] = [[NSLocale currentLocale] localeIdentifier];
-#if BSG_PLATFORM_SIMULATOR
-    device[@"simulator"] = @YES;
-#else
-    device[@"simulator"] = @NO;
-#endif
-    cache[@"device"] = device;
 
+    BSGDictSetSafeObject(device, systemInfo[@BSG_KSSystemField_OSVersion], @"osBuild");
+    BSGDictSetSafeObject(device, systemInfo[@BSG_KSSystemField_SystemVersion], @"osVersion");
+    BSGDictSetSafeObject(device, systemInfo[@BSG_KSSystemField_SystemName], @"osName");
+
+    // Translated from 'iDeviceMaj,Min' into human-readable "iPhone X" description on the server
+    BSGDictSetSafeObject(device, systemInfo[@BSG_KSSystemField_Machine], @"model");
+    BSGDictSetSafeObject(device, systemInfo[@BSG_KSSystemField_Model], @"modelNumber");
+    BSGDictSetSafeObject(device, @(PLATFORM_WORD_SIZE), @"wordSize");
+    BSGDictSetSafeObject(device, [[NSLocale currentLocale] localeIdentifier], @"locale");
+
+#if BSG_PLATFORM_SIMULATOR
+    BSGDictSetSafeObject(device, @YES, @"simulator");
+#else
+    BSGDictSetSafeObject(device, @NO, @"simulator");
+#endif
+    BSGDictSetSafeObject(cache, device, @"device");
     return cache;
 }
 

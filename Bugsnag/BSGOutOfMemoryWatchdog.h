@@ -6,13 +6,13 @@
 
 @interface BSGOutOfMemoryWatchdog : NSObject
 
-@property(nonatomic, strong, readonly) NSDictionary *lastBootCachedFileInfo;
+@property(nonatomic, strong, readonly, nullable) NSDictionary *lastBootCachedFileInfo;
 
 /**
  * Create a new watchdog using the sentinel path to store app/device state
  */
-- (instancetype)initWithSentinelPath:(NSString *)sentinelFilePath
-                       configuration:(BugsnagConfiguration *)config
+- (instancetype _Nullable)initWithSentinelPath:(NSString * _Nullable)sentinelFilePath
+                       configuration:(BugsnagConfiguration * _Nullable)config
     NS_DESIGNATED_INITIALIZER;
 
 /**

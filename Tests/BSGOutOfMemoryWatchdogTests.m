@@ -56,26 +56,26 @@
 
     self.client.codeBundleId = @"codeBundleIdHere";
     NSMutableDictionary *cachedFileInfo = [watchdog cachedFileInfo];
-    XCTAssertNotNil([cachedFileInfo objectForKey:@"app"]);
-    XCTAssertNotNil([cachedFileInfo objectForKey:@"device"]);
+    XCTAssertNotNil(cachedFileInfo[@"app"]);
+    XCTAssertNotNil(cachedFileInfo[@"device"]);
     
-    NSMutableDictionary *app = [cachedFileInfo objectForKey:@"app"];
-    XCTAssertNotNil([app objectForKey:@"bundleVersion"]);
-    XCTAssertNotNil([app objectForKey:@"id"]);
-    XCTAssertNotNil([app objectForKey:@"inForeground"]);
-    XCTAssertNotNil([app objectForKey:@"version"]);
-    XCTAssertNotNil([app objectForKey:@"name"]);
+    NSMutableDictionary *app = cachedFileInfo[@"app"];
+    XCTAssertNotNil(app[@"bundleVersion"]);
+    XCTAssertNotNil(app[@"id"]);
+    XCTAssertNotNil(app[@"inForeground"]);
+    XCTAssertNotNil(app[@"version"]);
+    XCTAssertNotNil(app[@"name"]);
     XCTAssertEqualObjects([app valueForKey:@"codeBundleId"], @"codeBundleIdHere");
     XCTAssertEqualObjects([app valueForKey:@"releaseStage"], @"MagicalTestingTime");
     
-    NSMutableDictionary *device = [cachedFileInfo objectForKey:@"device"];
-    XCTAssertNotNil([device objectForKey:@"osName"]);
-    XCTAssertNotNil([device objectForKey:@"osBuild"]);
-    XCTAssertNotNil([device objectForKey:@"osVersion"]);
-    XCTAssertNotNil([device objectForKey:@"id"]);
-    XCTAssertNotNil([device objectForKey:@"model"]);
-    XCTAssertNotNil([device objectForKey:@"simulator"]);
-    XCTAssertNotNil([device objectForKey:@"wordSize"]);
+    NSMutableDictionary *device = cachedFileInfo[@"device"];
+    XCTAssertNotNil(device[@"osName"]);
+    XCTAssertNotNil(device[@"osBuild"]);
+    XCTAssertNotNil(device[@"osVersion"]);
+    XCTAssertNotNil(device[@"id"]);
+    XCTAssertNotNil(device[@"model"]);
+    XCTAssertNotNil(device[@"simulator"]);
+    XCTAssertNotNil(device[@"wordSize"]);
     XCTAssertEqualObjects([device valueForKey:@"locale"], [[NSLocale currentLocale] localeIdentifier]);
 }
 
