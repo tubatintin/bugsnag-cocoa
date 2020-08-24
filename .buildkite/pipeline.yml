@@ -750,3 +750,4 @@ steps:
     concurrency_group: browserstack-app
     soft_fail:
       - exit_status: "*"
+
