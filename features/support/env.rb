@@ -13,7 +13,9 @@ After do |scenario|
   if $driver
     # [:syslog, :crashlog, :performance, :server, :safariConsole, :safariNetwork]
     # puts $driver.driver.logs.get(:crashlog)
+    $logger.info 'Calling $driver.reset'
     $driver.reset
+    $logger.info 'Called $driver.reset'
   end
 end
 
