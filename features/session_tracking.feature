@@ -13,6 +13,7 @@ Feature: Session Tracking
     And the payload field "app.bundleVersion" equals "5"
     And the payload field "app.releaseStage" equals "development"
     And the payload field "app.type" equals "iOS"
+    And the payload field "device.id" is not null
     And the payload field "device.osName" equals "iOS"
     And the payload field "device.model" matches the test device model
 
@@ -32,6 +33,7 @@ Feature: Session Tracking
     And the payload field "app.bundleVersion" equals "5"
     And the payload field "app.releaseStage" equals "development"
     And the payload field "app.type" equals "iOS"
+    And the payload field "device.id" is not null
     And the payload field "device.osName" equals "iOS"
     And the payload field "device.model" matches the test device model
 
