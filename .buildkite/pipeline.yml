@@ -36,6 +36,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -50,6 +52,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -112,6 +116,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -126,6 +132,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -188,6 +196,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -202,6 +212,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -264,6 +276,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -278,6 +292,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -340,6 +356,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -354,6 +372,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -416,6 +436,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -430,6 +452,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -492,6 +516,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -506,6 +532,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -568,6 +596,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -582,6 +612,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -644,6 +676,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -658,6 +692,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -720,6 +756,8 @@ steps:
       DEVICE_TYPE: IOS_13
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 12 end-to-end tests'
     timeout_in_minutes: 60
@@ -734,6 +772,8 @@ steps:
       DEVICE_TYPE: IOS_12
     concurrency: 10
     concurrency_group: browserstack-app
+    soft_fail:
+      - exit_status: "*"
 
   - label: ':ios: iOS 11 end-to-end tests'
     timeout_in_minutes: 60
@@ -766,3 +806,4 @@ steps:
     concurrency_group: browserstack-app
     soft_fail:
       - exit_status: "*"
+
