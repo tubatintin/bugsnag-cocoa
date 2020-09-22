@@ -22,19 +22,22 @@
 }
 
 - (void)run {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 10; i++) {
         NSString *message = [NSString stringWithFormat:@"Err %ld", (long)i];
         [self logError:[FooError errorWithDomain:@"com.example"
                                             code:401 + i
-                                        userInfo:@{NSLocalizedDescriptionKey: message}]];
+                                        userInfo:@{NSLocalizedDescriptionKey: message}]
+              withID:(int)i];
     }
 }
 
-- (void)logError:(NSError *)error {
+- (void)logError:(NSError *)error withID:(int)id {
     dispatch_async(self.queue1, ^{
+        NSLog(@"Executing: Queue 1 %d", id);
         [Bugsnag notifyError:error];
     });
     dispatch_async(self.queue2, ^{
+        NSLog(@"Executing: Queue 2 %d", id);
         [Bugsnag notifyError:error];
     });
 }
