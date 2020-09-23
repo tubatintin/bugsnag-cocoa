@@ -24,24 +24,21 @@ class ViewController: UIViewController {
         apiKeyField.text = UserDefaults.standard.string(forKey: "apiKey")
     }
 
-    @IBAction func runTestScenario() {
+    @IBAction func startBugsnag() {
+
         scenario = prepareScenario()
-        
         NSLog("Starting Bugsnag for scenario: %@", String(describing: scenario))
         scenario?.startBugsnag()
+    }
+
+    @IBAction func runOnce() {
+        NSLog("Run once")
         NSLog("Running scenario: %@", String(describing: scenario))
         scenario?.run()
     }
-
-    @IBAction func startBugsnag() {
-        scenario = prepareScenario()
-        NSLog("Starting Bugsnag for scenario: %@", String(describing: scenario))
-        scenario?.startBugsnag()
-    }
     
-    @IBAction func clearUserData(_ sender: Any) {
-        NSLog("Clear user defaults")
-        UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier!)
+    @IBAction func run100Times(_ sender: Any) {
+        NSLog("Run 100 times")
     }
     
     internal func prepareScenario() -> Scenario {
@@ -49,18 +46,9 @@ class ViewController: UIViewController {
         let eventMode : String! = scenarioMetaDataField.text
 
         let config: BugsnagConfiguration
-        if (apiKeyField.text!.count > 0) {
-            // Manual testing mode - use the real dashboard and the API key provided
-            let apiKey = apiKeyField.text!
-            NSLog("Running in manual mode with API key: %@", apiKey)
-            UserDefaults.standard.setValue(apiKey, forKey: "apiKey")
-            config = BugsnagConfiguration(apiKeyField.text!)
-        }
-        else {
-            // Automation mode
-            config = BugsnagConfiguration("12312312312312312312312312312312")
-            config.endpoints = BugsnagEndpointConfiguration(notify: "http://bs-local.com:9339", sessions: "http://bs-local.com:9339")
-        }
+        config = BugsnagConfiguration("12312312312312312312312312312312")
+        config.endpoints = BugsnagEndpointConfiguration(notify: "http://192.168.1.5:9339", sessions: "http://192.168.1.5:9339")
+        config.autoTrackSessions = false;
         
         let allowedErrorTypes = BugsnagErrorTypes()
         allowedErrorTypes.ooms = false

@@ -23,7 +23,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Scenario Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Cz-db-j7f">
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="ManyConcurrentNotifyScenario" borderStyle="roundedRect" placeholder="Scenario Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Cz-db-j7f">
                                 <rect key="frame" x="20" y="135" width="374" height="34"/>
                                 <accessibility key="accessibilityConfiguration" identifier="ScenarioNameField"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -38,25 +38,25 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oym-db-43x">
                                 <rect key="frame" x="20" y="243" width="374" height="30"/>
                                 <accessibility key="accessibilityConfiguration" identifier="StartScenarioButton"/>
-                                <state key="normal" title="Start Scenario"/>
+                                <state key="normal" title="Start Bugsnag"/>
                                 <connections>
-                                    <action selector="runTestScenario" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="tlB-VZ-ZdP"/>
+                                    <action selector="startBugsnag" destination="BYZ-38-t0r" eventType="touchUpInside" id="DFp-Rz-0d2"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2z0-6z-4u6">
                                 <rect key="frame" x="20" y="293" width="374" height="30"/>
                                 <accessibility key="accessibilityConfiguration" identifier="StartBugsnagButton"/>
-                                <state key="normal" title="Start Bugsnag"/>
+                                <state key="normal" title="Run once"/>
                                 <connections>
-                                    <action selector="startBugsnag" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="Wv1-OW-OOt"/>
+                                    <action selector="runOnce" destination="BYZ-38-t0r" eventType="touchUpInside" id="bgH-lJ-jeG"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEv-jB-Vej">
                                 <rect key="frame" x="20" y="343" width="374" height="30"/>
                                 <accessibility key="accessibilityConfiguration" identifier="ClearUserDefaultsButton"/>
-                                <state key="normal" title="Clear User Defaults"/>
+                                <state key="normal" title="Run 100 times"/>
                                 <connections>
-                                    <action selector="clearUserData:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZcO-Ew-Mhu"/>
+                                    <action selector="run100Times:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Jw6-SE-4Mr"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manual Testing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9q-4y-UF2">
