@@ -38,7 +38,13 @@ class ViewController: UIViewController {
     }
     
     @IBAction func run100Times(_ sender: Any) {
-        NSLog("Run 100 times")
+        NSLog("Run 20 times")
+        for _ in 1...20 {
+            NSLog("Run")
+            scenario?.run()
+            NSLog("Sleep")
+            sleep(5)
+        }
     }
     
     internal func prepareScenario() -> Scenario {
