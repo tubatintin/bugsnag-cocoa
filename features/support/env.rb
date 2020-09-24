@@ -10,7 +10,7 @@ $api_key = "12312312312312312312312312312312"
 
 
 After do |scenario|
-  if $driver
+  if $driver && !MazeRunner.configuration.appium_session_isolation
     # [:syslog, :crashlog, :performance, :server, :safariConsole, :safariNetwork]
     # puts $driver.driver.logs.get(:crashlog)
     $driver.reset_with_timeout
@@ -30,11 +30,11 @@ AfterConfiguration do |config|
       'browserstack.appium_version' => '1.15.0' # Temporary fix to allow running on iOS 10
     }
   )
-  $driver.start_driver
+  $driver.start_driver unless MazeRunner.configuration.appium_session_isolation
 end
 
 at_exit do
-  if $driver
+  if $driver && !MazeRunner.configuration.appium_session_isolation
     $driver.close_app
     $driver.driver_quit
   end
