@@ -18,7 +18,7 @@ After do |scenario|
 end
 
 AfterConfiguration do |config|
-  AppAutomateDriver.new(
+  ResilientDriver.new(
     bs_username,
     bs_access_key,
     bs_local_id,
