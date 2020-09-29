@@ -18,7 +18,7 @@ After do |scenario|
 end
 
 AfterConfiguration do |config|
-  ResilientDriver.new(
+  ResilientAppiumDriver.new(
     bs_username,
     bs_access_key,
     bs_local_id,
@@ -34,7 +34,7 @@ AfterConfiguration do |config|
 end
 
 at_exit do
-  if MazeRunner.driver
+  if !MazeRunner.driver.nil?
     MazeRunner.driver.close_app
     MazeRunner.driver.driver_quit
   end
