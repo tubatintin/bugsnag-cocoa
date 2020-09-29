@@ -34,7 +34,7 @@ AfterConfiguration do |config|
 end
 
 at_exit do
-  if !MazeRunner.driver.nil?
+  unless MazeRunner.driver.nil?
     MazeRunner.driver.close_app
     MazeRunner.driver.driver_quit
   end
