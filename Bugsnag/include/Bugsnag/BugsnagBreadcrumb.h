@@ -33,40 +33,31 @@
 #endif
 #endif
 
-typedef NS_ENUM(NSUInteger, BSGBreadcrumbType) {
-    /**
-     *  Any breadcrumb sent via Bugsnag.leaveBreadcrumb()
-     */
-    BSGBreadcrumbTypeManual,
-    /**
-     *  A call to Bugsnag.notify() (internal use only)
-     */
-    BSGBreadcrumbTypeError,
-    /**
-     *  A log message
-     */
-    BSGBreadcrumbTypeLog,
-    /**
-     *  A navigation action, such as pushing a view controller or dismissing an alert
-     */
-    BSGBreadcrumbTypeNavigation,
-    /**
-     *  A background process, such performing a database query
-     */
-    BSGBreadcrumbTypeProcess,
-    /**
-     *  A network request
-     */
-    BSGBreadcrumbTypeRequest,
-    /**
-     *  Change in application or view state
-     */
-    BSGBreadcrumbTypeState,
-    /**
-     *  A user event, such as authentication or control events
-     */
-    BSGBreadcrumbTypeUser,
-};
+typedef NSString * _Nonnull BSGBreadcrumbType NS_STRING_ENUM;
+
+/// Any breadcrumb sent via Bugsnag.leaveBreadcrumb()
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeManual;
+
+/// A call to Bugsnag.notify() (internal use only)
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeError;
+
+/// A log message
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeLog;
+
+/// A navigation action, such as pushing a view controller or dismissing an alert
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeNavigation;
+
+/// A background process, such performing a database query
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeProcess;
+
+/// A network request
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeRequest;
+
+/// Change in application or view state
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeState;
+
+/// A user event, such as authentication or control events
+FOUNDATION_EXPORT BSGBreadcrumbType const BSGBreadcrumbTypeUser;
 
 /**
  * Types of breadcrumbs which can be reported

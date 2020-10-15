@@ -33,46 +33,15 @@
 
 typedef void (^BSGBreadcrumbConfiguration)(BugsnagBreadcrumb *_Nonnull);
 
-NSString *BSGBreadcrumbTypeValue(BSGBreadcrumbType type) {
-    switch (type) {
-    case BSGBreadcrumbTypeLog:
-        return @"log";
-    case BSGBreadcrumbTypeUser:
-        return @"user";
-    case BSGBreadcrumbTypeError:
-        return BSGKeyError;
-    case BSGBreadcrumbTypeState:
-        return @"state";
-    case BSGBreadcrumbTypeManual:
-        return @"manual";
-    case BSGBreadcrumbTypeProcess:
-        return @"process";
-    case BSGBreadcrumbTypeRequest:
-        return @"request";
-    case BSGBreadcrumbTypeNavigation:
-        return @"navigation";
-    }
-}
+BSGBreadcrumbType const BSGBreadcrumbTypeManual = @"manual";
+BSGBreadcrumbType const BSGBreadcrumbTypeError = @"error";
+BSGBreadcrumbType const BSGBreadcrumbTypeLog = @"log";
+BSGBreadcrumbType const BSGBreadcrumbTypeNavigation = @"navigation";
+BSGBreadcrumbType const BSGBreadcrumbTypeProcess = @"process";
+BSGBreadcrumbType const BSGBreadcrumbTypeRequest = @"request";
+BSGBreadcrumbType const BSGBreadcrumbTypeState = @"state";
+BSGBreadcrumbType const BSGBreadcrumbTypeUser = @"user";
 
-BSGBreadcrumbType BSGBreadcrumbTypeFromString(NSString *value) {
-    if ([value isEqual:@"log"]) {
-        return BSGBreadcrumbTypeLog;
-    } else if ([value isEqual:@"user"]) {
-        return BSGBreadcrumbTypeUser;
-    } else if ([value isEqual:@"error"]) {
-        return BSGBreadcrumbTypeError;
-    } else if ([value isEqual:@"state"]) {
-        return BSGBreadcrumbTypeState;
-    } else if ([value isEqual:@"process"]) {
-        return BSGBreadcrumbTypeProcess;
-    } else if ([value isEqual:@"request"]) {
-        return BSGBreadcrumbTypeRequest;
-    } else if ([value isEqual:@"navigation"]) {
-        return BSGBreadcrumbTypeNavigation;
-    } else {
-        return BSGBreadcrumbTypeManual;
-    }
-}
 
 @implementation BugsnagBreadcrumb
 
@@ -102,7 +71,7 @@ BSGBreadcrumbType BSGBreadcrumbTypeFromString(NSString *value) {
                 // field should be delivered in as a "name" field.  This comment notes that variance.
                 BSGKeyName : [_message copy],
                 BSGKeyTimestamp : timestamp,
-                BSGKeyType : BSGBreadcrumbTypeValue(_type),
+                BSGKeyType : _type,
                 BSGKeyMetadata : metadata
             };
         }
@@ -210,7 +179,7 @@ BSGBreadcrumbType BSGBreadcrumbTypeFromString(NSString *value) {
             crumb.message = dict[BSGKeyMessage] ?: dict[BSGKeyName];
             crumb.metadata = dict[BSGKeyMetadata] ?: dict[@"metadata"];
             crumb.timestamp = [BSG_RFC3339DateTool dateFromString:dict[BSGKeyTimestamp]];
-            crumb.type = BSGBreadcrumbTypeFromString(dict[BSGKeyType]);
+            crumb.type = dict[BSGKeyType];
         }];
     }
     return nil;

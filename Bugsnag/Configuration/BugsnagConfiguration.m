@@ -447,28 +447,32 @@ NSString * const kBugsnagUserUserId = @"BugsnagUserUserId";
  * @returns Whether to record the breadcrumb
  */
 - (BOOL)shouldRecordBreadcrumbType:(BSGBreadcrumbType)type {
-    // enabledBreadcrumbTypes is BSGEnabledBreadcrumbTypeNone
-    if (self.enabledBreadcrumbTypes == BSGEnabledBreadcrumbTypeNone && type != BSGBreadcrumbTypeManual) {
+    if (type == BSGBreadcrumbTypeManual) {
+        return YES;
+    }
+    if (self.enabledBreadcrumbTypes == BSGEnabledBreadcrumbTypeNone) {
         return NO;
     }
-
-    switch (type) {
-        case BSGBreadcrumbTypeManual:
-            return YES;
-        case BSGBreadcrumbTypeError :
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeError;
-        case BSGBreadcrumbTypeLog:
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeLog;
-        case BSGBreadcrumbTypeNavigation:
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeNavigation;
-        case BSGBreadcrumbTypeProcess:
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeProcess;
-        case BSGBreadcrumbTypeRequest:
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeRequest;
-        case BSGBreadcrumbTypeState:
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeState;
-        case BSGBreadcrumbTypeUser:
-            return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeUser;
+    if (type == BSGBreadcrumbTypeError) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeError;
+    }
+    if (type == BSGBreadcrumbTypeLog) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeLog;
+    }
+    if (type == BSGBreadcrumbTypeNavigation) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeNavigation;
+    }
+    if (type == BSGBreadcrumbTypeProcess) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeProcess;
+    }
+    if (type == BSGBreadcrumbTypeRequest) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeRequest;
+    }
+    if (type == BSGBreadcrumbTypeState) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeState;
+    }
+    if (type == BSGBreadcrumbTypeUser) {
+        return self.enabledBreadcrumbTypes & BSGEnabledBreadcrumbTypeUser;
     }
     return NO;
 }
