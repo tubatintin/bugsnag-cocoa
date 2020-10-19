@@ -5,6 +5,9 @@ Changelog
 
 ## Enhancements
 
+* Use os_proc_available_memory() to get free memory, if available.
+  [851](https://github.com/bugsnag/bugsnag-cocoa/pull/851)
+
 * Timestamp accuracy in reports has been increased from seconds to milliseconds.
   [847](https://github.com/bugsnag/bugsnag-cocoa/pull/847)
 
